@@ -1,10 +1,14 @@
 package com.dicoding.picodiploma.loginwithanimation.view.signup
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +31,45 @@ class SignupActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.imageView,View.TRANSLATION_X,-30f,30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.titleTextView,View.ALPHA,1f).setDuration(500)
+
+        val nameTextView = ObjectAnimator.ofFloat(binding.nameTextView,View.ALPHA,1f).setDuration(500)
+        val nameEditText = ObjectAnimator.ofFloat(binding.nameEditTextLayout,View.ALPHA,1f).setDuration(500)
+
+        val emailTextView = ObjectAnimator.ofFloat(binding.emailTextView,View.ALPHA,1f).setDuration(500)
+        val emailEditText = ObjectAnimator.ofFloat(binding.emailEditTextLayout,View.ALPHA,1f).setDuration(500)
+
+        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView,View.ALPHA,1f).setDuration(500)
+        val passwordEditText = ObjectAnimator.ofFloat(binding.passwordEditTextLayout,View.ALPHA,1f).setDuration(500)
+
+        val button = ObjectAnimator.ofFloat(binding.signupButton,View.ALPHA,1f).setDuration(500)
+        val name = AnimatorSet().apply {
+            playTogether(nameTextView,nameEditText)
+        }
+
+        val email = AnimatorSet().apply {
+            playTogether(emailTextView,emailEditText)
+        }
+
+        val password = AnimatorSet().apply {
+            playTogether(passwordTextView,passwordEditText)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title,name,email,password,button)
+            start()
+        }
+
     }
 
     private fun setupView() {
@@ -42,6 +85,8 @@ class SignupActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+
+
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             val name = binding.nameEditText.text.toString()
@@ -56,13 +101,14 @@ class SignupActivity : AppCompatActivity() {
                         is Result.Success -> showSuccessDialog(email)
                     }
                 }
+            }else {
+                Toast.makeText(this, "Isi Form Terlebih Dahulu", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun isFormValid(): Boolean {
-       return !(binding.emailEditTextLayout.error != null || binding.nameEditTextLayout.error != null || binding.passwordEditTextLayout.error != null)
-
+       return !(binding.emailEditTextLayout.error != null || binding.passwordEditTextLayout.error != null)
     }
 
 
@@ -83,9 +129,9 @@ class SignupActivity : AppCompatActivity() {
     private fun showErrorDialog(errorMessage: String) {
         showLoading(false)
         AlertDialog.Builder(this).apply {
-            setTitle("Registration Failed")
+            setTitle(getString(R.string.account_failed_message))
             setMessage(errorMessage)
-            setPositiveButton("OK") { _, _ ->
+            setPositiveButton("Ok") { _, _ ->
             }
             create()
             show()

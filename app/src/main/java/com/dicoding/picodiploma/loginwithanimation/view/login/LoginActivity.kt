@@ -1,8 +1,11 @@
 package com.dicoding.picodiploma.loginwithanimation.view.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -26,6 +29,47 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        setupAnimation()
+    }
+
+    private fun setupAnimation() {
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatMode = ObjectAnimator.REVERSE
+            repeatCount = ObjectAnimator.INFINITE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(500)
+        val message =
+            ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(500)
+
+        val emailTextview =
+            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(500)
+        val emailEditText =
+            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(500)
+
+        val passwordTextView =
+            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(500)
+        val passwordEditText =
+            ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(500)
+
+        val button = ObjectAnimator.ofFloat(binding.loginButton,View.ALPHA,1f).setDuration(500)
+        val text = AnimatorSet().apply {
+            playTogether(title, message)
+        }
+
+        val email = AnimatorSet().apply {
+            playTogether(emailTextview, emailEditText)
+        }
+
+        val password = AnimatorSet().apply {
+            playTogether(passwordEditText, passwordTextView)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(text, email, password,button)
+            start()
+        }
     }
 
     private fun setupView() {

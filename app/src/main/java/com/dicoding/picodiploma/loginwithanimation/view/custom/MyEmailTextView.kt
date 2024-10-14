@@ -25,12 +25,11 @@ class MyEmailTextView @JvmOverloads constructor(
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                error = if (!isValidEmail(s.toString())) {
+                if (!isValidEmail(s.toString())) {
                     setError(errorMessage)
-                    errorMessage
+
                 } else {
                     setError(null)
-                    null
                 }
             }
 
