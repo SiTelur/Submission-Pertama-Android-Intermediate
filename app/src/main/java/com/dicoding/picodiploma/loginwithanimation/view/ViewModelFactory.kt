@@ -19,7 +19,7 @@ class ViewModelFactory(private val userRepository: UserRepository, private val s
                 MainViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(userRepository) as T
+                LoginViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
                 SignupViewModel(storyRepository) as T
@@ -35,7 +35,7 @@ class ViewModelFactory(private val userRepository: UserRepository, private val s
         fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
-                    INSTANCE = ViewModelFactory(Injection.provideRepository(context),Injection.provideStoryRepository())
+                    INSTANCE = ViewModelFactory(Injection.provideRepository(context),Injection.provideStoryRepository(context))
                 }
             }
             return INSTANCE as ViewModelFactory
