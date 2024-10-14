@@ -15,5 +15,8 @@
     <string name="logout">Keluar</string>
     <string name="error_email">Email Anda Tidak Valid</string>
     <string name="error_password">Password tidak boleh kurang dari 8 karakter</string>
-
+    <string name="account_created_message">Akun dengan %1$s sudah jadi nih. Yuk, login dan belajar coding.</string>
+    <string name="next">Selanjutnya</string>
+    <string name="yeah">Yeah!</string>
+    <string name="nay">Oh No</string>
 </resources>

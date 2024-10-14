@@ -34,9 +34,6 @@ class MyPasswordTextView @JvmOverloads constructor(
         })
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-    }
 
     private fun setError(error: String?) {
         (parent.parent as? TextInputLayout)?.let { textInputLayout ->

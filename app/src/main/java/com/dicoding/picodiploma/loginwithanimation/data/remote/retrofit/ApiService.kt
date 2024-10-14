@@ -1,16 +1,24 @@
 package com.dicoding.picodiploma.loginwithanimation.data.remote.retrofit
 
-import com.dicoding.picodiploma.loginwithanimation.data.remote.response.LoginRequestBody
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.LoginResponse
-import com.dicoding.picodiploma.loginwithanimation.data.remote.response.RegisterRequestBody
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.RegisterResponse
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 
 interface ApiService {
-    @POST
-    suspend fun registerNew(registerRequestBody: RegisterRequestBody) : RegisterResponse
+    @FormUrlEncoded
+    @POST("register")
+    suspend fun registerNew(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+    ): RegisterResponse
 
     @POST
-    suspend fun logIn(loginRequestBody: LoginRequestBody) : LoginResponse
+    suspend fun logIn(
+        @Field("email") email: String,
+        @Field("password") password: String,
+    ): LoginResponse
 }
