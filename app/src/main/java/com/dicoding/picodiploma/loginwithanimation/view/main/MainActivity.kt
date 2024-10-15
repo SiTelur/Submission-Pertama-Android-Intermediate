@@ -5,14 +5,21 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.picodiploma.loginwithanimation.R
+import com.dicoding.picodiploma.loginwithanimation.data.Result
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMainBinding
+import com.dicoding.picodiploma.loginwithanimation.utils.StoryAdapter
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.detail.DetailActivity
+import com.dicoding.picodiploma.loginwithanimation.view.upload.UploadActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
@@ -32,18 +39,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val adapter = StoryAdapter()
+        binding.rvStory.adapter = adapter
+
+
+        viewModel.getStories().observe(this){ stories ->
+            when (stories){
+                is Result.Error -> showSnackBar(stories.error)
+                Result.Loading ->   showLoading(true)
+                is Result.Success -> {
+                    showLoading(false)
+                    adapter.submitList(stories.data)
+                }
+            }
+        }
+        
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(this,UploadActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
+    private fun showSnackBar(message:String) {
+        showLoading(false)
+        Snackbar.make(binding.root,message,Snackbar.LENGTH_SHORT).show()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -64,5 +85,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar3.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getStories()
+    }
 
 }

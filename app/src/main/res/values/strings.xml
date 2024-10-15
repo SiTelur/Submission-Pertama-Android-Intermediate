@@ -21,4 +21,9 @@
     <string name="next">Selanjutnya</string>
     <string name="yeah">Yeah!</string>
     <string name="nay">Oh No</string>
+    <string name="add_story">Tambah Cerita</string>
+    <string name="select_image">Ambil Gambar Dari Galeri</string>
+    <string name="story_description">Deskripsi Cerita</string>
+    <string name="upload_story">Unggah Cerita</string>
+    <string name="take_picture">Ambil Gambar Dari Kamera</string>
 </resources>
