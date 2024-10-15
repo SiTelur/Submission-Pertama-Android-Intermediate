@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 when (loginResponse){
                     is Result.Error -> showErrorDialog(loginResponse.error)
                     Result.Loading -> showLoading(true)
-                    is Result.Success -> showSuccessDialog()
+                    is Result.Success -> showSuccessDialog(loginResponse.data.email)
                 }
             }
 
@@ -103,11 +103,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSuccessDialog() {
+    private fun showSuccessDialog(name:String) {
         showLoading(false)
         AlertDialog.Builder(this).apply {
             setTitle(getString(R.string.yeah))
-            setMessage(getString(R.string.account_login_success))
+            setMessage(getString(R.string.account_login_success,name))
             setPositiveButton(getString(R.string.next)) { _, _ ->
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
