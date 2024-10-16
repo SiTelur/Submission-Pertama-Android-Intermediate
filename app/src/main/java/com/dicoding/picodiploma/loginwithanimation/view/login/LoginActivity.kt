@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.Result
-import com.dicoding.picodiploma.loginwithanimation.data.pref.UserModel
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityLoginBinding
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.main.MainActivity
@@ -55,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
         val passwordEditText =
             ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(500)
 
-        val button = ObjectAnimator.ofFloat(binding.loginButton,View.ALPHA,1f).setDuration(500)
+        val button = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(500)
         val text = AnimatorSet().apply {
             playTogether(title, message)
         }
@@ -69,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         AnimatorSet().apply {
-            playSequentially(text, email, password,button)
+            playSequentially(text, email, password, button)
             start()
         }
     }
@@ -91,8 +90,8 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            viewModel.loginStory(email,password).observe(this){ loginResponse ->
-                when (loginResponse){
+            viewModel.loginStory(email, password).observe(this) { loginResponse ->
+                when (loginResponse) {
                     is Result.Error -> showErrorDialog(loginResponse.error)
                     Result.Loading -> showLoading(true)
                     is Result.Success -> showSuccessDialog(loginResponse.data.email)
@@ -103,11 +102,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSuccessDialog(name:String) {
+    private fun showSuccessDialog(name: String) {
         showLoading(false)
         AlertDialog.Builder(this).apply {
             setTitle(getString(R.string.yeah))
-            setMessage(getString(R.string.account_login_success,name))
+            setMessage(getString(R.string.account_login_success, name))
             setPositiveButton(getString(R.string.next)) { _, _ ->
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
