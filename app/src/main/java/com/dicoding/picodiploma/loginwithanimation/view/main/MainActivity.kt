@@ -1,14 +1,10 @@
 package com.dicoding.picodiploma.loginwithanimation.view.main
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.picodiploma.loginwithanimation.R
@@ -16,14 +12,13 @@ import com.dicoding.picodiploma.loginwithanimation.data.Result
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.loginwithanimation.utils.StoryAdapter
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
-import com.dicoding.picodiploma.loginwithanimation.view.detail.DetailActivity
 import com.dicoding.picodiploma.loginwithanimation.view.upload.UploadActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getInstance(application)
     }
     private lateinit var binding: ActivityMainBinding
 
@@ -31,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val adapter = StoryAdapter()
+        binding.rvStory.adapter = adapter
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
@@ -39,31 +35,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = StoryAdapter()
-        binding.rvStory.adapter = adapter
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(this, UploadActivity::class.java)
+            startActivity(intent)
+        }
 
-
-        viewModel.getStories().observe(this){ stories ->
-            when (stories){
+        viewModel.getStories().observe(this) { stories ->
+            when (stories) {
                 is Result.Error -> showSnackBar(stories.error)
-                Result.Loading ->   showLoading(true)
+                Result.Loading -> showLoading(true)
                 is Result.Success -> {
                     showLoading(false)
                     adapter.submitList(stories.data)
                 }
             }
         }
-        
-        binding.floatingActionButton.setOnClickListener {
-            val intent = Intent(this,UploadActivity::class.java)
-            startActivity(intent)
-        }
 
     }
 
-    private fun showSnackBar(message:String) {
+    private fun showSnackBar(message: String) {
         showLoading(false)
-        Snackbar.make(binding.root,message,Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
 
     }
 
@@ -81,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.logout()
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

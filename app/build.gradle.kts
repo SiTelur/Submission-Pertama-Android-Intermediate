@@ -55,4 +55,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 }

@@ -1,6 +1,5 @@
 package com.dicoding.picodiploma.loginwithanimation.view.signup
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Build
@@ -35,38 +34,44 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView,View.TRANSLATION_X,-30f,30f).apply {
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
-        val title = ObjectAnimator.ofFloat(binding.titleTextView,View.ALPHA,1f).setDuration(500)
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(500)
 
-        val nameTextView = ObjectAnimator.ofFloat(binding.nameTextView,View.ALPHA,1f).setDuration(500)
-        val nameEditText = ObjectAnimator.ofFloat(binding.nameEditTextLayout,View.ALPHA,1f).setDuration(500)
+        val nameTextView =
+            ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(500)
+        val nameEditText =
+            ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(500)
 
-        val emailTextView = ObjectAnimator.ofFloat(binding.emailTextView,View.ALPHA,1f).setDuration(500)
-        val emailEditText = ObjectAnimator.ofFloat(binding.emailEditTextLayout,View.ALPHA,1f).setDuration(500)
+        val emailTextView =
+            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(500)
+        val emailEditText =
+            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(500)
 
-        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView,View.ALPHA,1f).setDuration(500)
-        val passwordEditText = ObjectAnimator.ofFloat(binding.passwordEditTextLayout,View.ALPHA,1f).setDuration(500)
+        val passwordTextView =
+            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(500)
+        val passwordEditText =
+            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(500)
 
-        val button = ObjectAnimator.ofFloat(binding.signupButton,View.ALPHA,1f).setDuration(500)
+        val button = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(500)
         val name = AnimatorSet().apply {
-            playTogether(nameTextView,nameEditText)
+            playTogether(nameTextView, nameEditText)
         }
 
         val email = AnimatorSet().apply {
-            playTogether(emailTextView,emailEditText)
+            playTogether(emailTextView, emailEditText)
         }
 
         val password = AnimatorSet().apply {
-            playTogether(passwordTextView,passwordEditText)
+            playTogether(passwordTextView, passwordEditText)
         }
 
         AnimatorSet().apply {
-            playSequentially(title,name,email,password,button)
+            playSequentially(title, name, email, password, button)
             start()
         }
 
@@ -86,38 +91,36 @@ class SignupActivity : AppCompatActivity() {
     }
 
 
-
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            if (isFormValid()){
-                signupViewModel.registerNew(name,email,password).observe(this){ result ->
-                    when (result){
+            if (isFormValid()) {
+                signupViewModel.registerNew(name, email, password).observe(this) { result ->
+                    when (result) {
                         is Result.Error -> showErrorDialog(result.error)
                         Result.Loading -> showLoading(true)
                         is Result.Success -> showSuccessDialog(email)
                     }
                 }
-            }else {
+            } else {
                 Toast.makeText(this, "Isi Form Terlebih Dahulu", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun isFormValid(): Boolean {
-       return !(binding.emailEditTextLayout.error != null || binding.passwordEditTextLayout.error != null)
+        return !(binding.emailEditTextLayout.error != null || binding.passwordEditTextLayout.error != null)
     }
 
 
-
-    private fun showSuccessDialog(email:String){
+    private fun showSuccessDialog(email: String) {
         showLoading(false)
         AlertDialog.Builder(this).apply {
             setTitle(getString(R.string.yeah))
-            setMessage(getString(R.string.account_created_message,email))
+            setMessage(getString(R.string.account_created_message, email))
             setPositiveButton(getString(R.string.next)) { _, _ ->
                 finish()
             }
@@ -137,7 +140,6 @@ class SignupActivity : AppCompatActivity() {
             show()
         }
     }
-
 
 
     private fun showLoading(isLoading: Boolean) {

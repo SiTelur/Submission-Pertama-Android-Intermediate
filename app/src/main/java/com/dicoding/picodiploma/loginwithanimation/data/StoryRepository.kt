@@ -9,10 +9,13 @@ import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.ErrorResponse
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.RegisterResponse
+import com.dicoding.picodiploma.loginwithanimation.data.remote.response.UploadStoryResponse
 import com.dicoding.picodiploma.loginwithanimation.data.remote.retrofit.ApiService
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.HttpException
 
 class StoryRepository private constructor(
@@ -70,6 +73,19 @@ class StoryRepository private constructor(
             val response = apiService.getStories().listStory
             emit(Result.Success(response))
         } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            emit(Result.Error(errorMessage.toString()))
+        }
+    }
+
+    fun uploadStory(file : MultipartBody.Part,description: RequestBody): LiveData<Result<UploadStoryResponse>> = liveData{
+        emit(Result.Loading)
+        try{
+            val response = apiService.postStory(file,description)
+            emit(Result.Success(response))
+        }catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()
             val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
             val errorMessage = errorBody.message

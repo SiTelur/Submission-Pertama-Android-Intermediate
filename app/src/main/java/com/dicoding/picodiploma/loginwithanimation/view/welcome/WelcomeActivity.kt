@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.animation.AnimationSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityWelcomeBinding
@@ -29,21 +28,23 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun setupAnimation() {
-        val picture = ObjectAnimator.ofFloat(binding.imageView, View.ALPHA,1f).setDuration(500)
+        val picture = ObjectAnimator.ofFloat(binding.imageView, View.ALPHA, 1f).setDuration(1000)
 
-        val title = ObjectAnimator.ofFloat(binding.titleTextView,View.ALPHA,1f).setDuration(500)
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(1000)
 
-        val subtitle = ObjectAnimator.ofFloat(binding.descTextView,View.ALPHA,1f).setDuration(500)
+        val subtitle =
+            ObjectAnimator.ofFloat(binding.descTextView, View.ALPHA, 1f).setDuration(1000)
 
-        val btnMasuk = ObjectAnimator.ofFloat(binding.loginButton,View.ALPHA,1f).setDuration(500)
-        val btnDaftar = ObjectAnimator.ofFloat(binding.signupButton,View.ALPHA,1f).setDuration(500)
+        val btnMasuk = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(1000)
+        val btnDaftar =
+            ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(1000)
 
         val together = AnimatorSet().apply {
-            playTogether(btnDaftar,btnMasuk)
+            playTogether(btnDaftar, btnMasuk)
         }
 
         AnimatorSet().apply {
-            playSequentially(picture,title,subtitle,together)
+            playSequentially(picture, title, subtitle, together)
             start()
         }
     }

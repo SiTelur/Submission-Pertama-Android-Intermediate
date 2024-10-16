@@ -3,7 +3,15 @@ package com.dicoding.picodiploma.loginwithanimation.data.remote.retrofit
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.LoginResponse
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.RegisterResponse
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.StoriesResponse
-import retrofit2.http.*
+import com.dicoding.picodiploma.loginwithanimation.data.remote.response.UploadStoryResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 
 
 interface ApiService {
@@ -24,5 +32,12 @@ interface ApiService {
 
     @GET("stories")
     suspend fun getStories(): StoriesResponse
+
+    @Multipart
+    @POST("stories")
+    suspend fun postStory(
+        @Part file: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+    ): UploadStoryResponse
 
 }

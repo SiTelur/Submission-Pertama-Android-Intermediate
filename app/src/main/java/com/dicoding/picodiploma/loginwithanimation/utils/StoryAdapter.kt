@@ -7,17 +7,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.databinding.StoryItemLayoutBinding
 import com.dicoding.picodiploma.loginwithanimation.view.detail.DetailActivity
 
-class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
 
-    inner class StoryViewHolder(val binding: StoryItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
+    inner class StoryViewHolder(val binding: StoryItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ListStoryItem) {
             Glide.with(binding.root.context)
                 .load(item.photoUrl)
@@ -34,11 +35,12 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIF
                         Pair(binding.ivItemPhoto, "picture"),
                     )
                 val data = Bundle().apply {
-                    putParcelable(DetailActivity.DETAIL_ITEM,item)
+                    putParcelable(DetailActivity.DETAIL_ITEM, item)
                 }
 
-                val intent = Intent(binding.root.context,DetailActivity::class.java).putExtras(data)
-                binding.root.context.startActivity(intent,optionsCompat.toBundle())
+                val intent =
+                    Intent(binding.root.context, DetailActivity::class.java).putExtras(data)
+                binding.root.context.startActivity(intent, optionsCompat.toBundle())
             }
         }
     }
@@ -63,11 +65,12 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIF
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
-        val binding = StoryItemLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            StoryItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-       holder.bind(getItem(position))
+        holder.bind(getItem(position))
     }
 }
