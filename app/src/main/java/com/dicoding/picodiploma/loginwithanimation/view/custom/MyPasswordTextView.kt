@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 class MyPasswordTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
 ) : AppCompatEditText(context, attrs) {
-    private var errorMessage: String = resources.getString(R.string.error_email)
+    private var errorMessage: String = resources.getString(R.string.error_password)
 
     init {
         addTextChangedListener(object : TextWatcher {
