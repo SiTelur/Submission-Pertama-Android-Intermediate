@@ -1,6 +1,5 @@
 package com.dicoding.picodiploma.loginwithanimation.view.upload
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -17,9 +16,6 @@ import com.dicoding.picodiploma.loginwithanimation.utils.getImageUri
 import com.dicoding.picodiploma.loginwithanimation.utils.reduceFileImage
 import com.dicoding.picodiploma.loginwithanimation.utils.uriToFile
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
-import com.dicoding.picodiploma.loginwithanimation.view.main.MainActivity
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -66,12 +62,7 @@ class UploadActivity : AppCompatActivity() {
                             Result.Loading -> showLoading(true)
                             is Result.Success -> {
                                 showToast(getString(R.string.upload_success))
-                                runBlocking {
-                                    delay(500)
-                                }
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
+                                finish()
                             }
                         }
                     }

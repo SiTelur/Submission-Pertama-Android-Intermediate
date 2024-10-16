@@ -7,14 +7,11 @@ import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.dicoding.picodiploma.loginwithanimation.R
-import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
-import com.dicoding.picodiploma.loginwithanimation.data.pref.dataStore
 import com.dicoding.picodiploma.loginwithanimation.data.remote.response.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.data.remote.retrofit.ApiService
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-class StackRemoteViewFactory(private val mContext: Context, private val apiService: ApiService,private val userPreference: UserPreference) :
+class StackRemoteViewFactory(private val mContext: Context, private val apiService: ApiService) :
     RemoteViewsService.RemoteViewsFactory {
     private var mWidgetItems = listOf<ListStoryItem>()
     override fun onCreate() {
@@ -23,12 +20,7 @@ class StackRemoteViewFactory(private val mContext: Context, private val apiServi
 
     override fun onDataSetChanged() {
         runBlocking {
-            val token = userPreference.getSession().first().token
-            try {
-                mWidgetItems = apiService.getStories("Bearer $token").listStory
-            }catch (e:Exception){
-
-            }
+            mWidgetItems = apiService.getStories().listStory
         }
     }
 

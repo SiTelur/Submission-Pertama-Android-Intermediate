@@ -70,8 +70,7 @@ class StoryRepository private constructor(
     fun loadStory():LiveData<Result<List<ListStoryItem>>> = liveData {
         emit(Result.Loading)
         try {
-            val token = userPreference.getSession().first().token ?: ""
-            val response = apiService.getStories("Bearer $token").listStory
+            val response = apiService.getStories().listStory
             emit(Result.Success(response))
         } catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()
@@ -84,8 +83,7 @@ class StoryRepository private constructor(
     fun uploadStory(file : MultipartBody.Part,description: RequestBody): LiveData<Result<UploadStoryResponse>> = liveData{
         emit(Result.Loading)
         try{
-            val token = userPreference.getSession().first().token ?: ""
-            val response = apiService.postStory("Bearer $token",file,description)
+            val response = apiService.postStory(file,description)
             emit(Result.Success(response))
         }catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()
